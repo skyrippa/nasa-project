@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const { parse } = require('csv-parse')
 
-const planets = require('./planets.mongo')
+const planetsDatabase = require('./planets.mongo')
 
 function isHabitablePlanet(planet) {
   return planet['koi_disposition'] === 'CONFIRMED'
@@ -35,14 +35,14 @@ function loadPlanetsData() {
 }
 
 async function getAllPlanets() {
-    return await planets.find({}, {
+    return await planetsDatabase.find({}, {
         '_id': 0, '__v': 0,
     })
 }
 
 async function savePlanet(planet) {
     try {
-        await planets.updateOne({
+        await planetsDatabase.updateOne({
             keplerName: planet.kepler_name,
         }, {
             keplerName: planet.kepler_name,
