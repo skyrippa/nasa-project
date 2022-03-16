@@ -19,7 +19,7 @@ function loadPlanetsData() {
         }))
         .on('data', async (data) => {
             if (isHabitablePlanet(data)) {
-                savePlanet(data)
+                await savePlanet(data)
             }
         })
         .on('error', (err) => {
@@ -28,7 +28,7 @@ function loadPlanetsData() {
         })
         .on('end', async () => {
             const countPlanetsFound = (await getAllPlanets()).length
-            console.log(`${countPlanetsFound} planets found`)
+            console.log(`${countPlanetsFound} habitable planets found`)
             resolve()
         })
     })
@@ -46,6 +46,8 @@ async function savePlanet(planet) {
             keplerName: planet.kepler_name,
         }, {
             keplerName: planet.kepler_name,
+        }, {
+            upsert: true,
         })
     } catch(err) {
         console.error(`Could not save planet: ${err}`)
